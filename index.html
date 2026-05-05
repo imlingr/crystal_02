@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>召喚你的療癒小石｜14題療癒心理測驗</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        "Noto Sans TC",
+        "Microsoft JhengHei",
+        "PingFang TC",
+        "Heiti TC",
+        sans-serif;
+      background:
+        radial-gradient(circle at top, #fff8f1 0%, #f7ecdf 45%, #ead8ca 100%);
+      color: #4a3328;
+      min-height: 100vh;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .app {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 18px 12px 36px;
+    }
+
+    .phone-frame {
+      width: 100%;
+      max-width: 540px;
+      min-height: calc(100vh - 36px);
+      background: rgba(255, 250, 245, 0.94);
+      border-radius: 30px;
+      box-shadow: 0 18px 42px rgba(125, 86, 55, 0.24);
+      overflow: hidden;
+      border: 1px solid rgba(181, 130, 91, 0.24);
+      position: relative;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .cover-page {
+      min-height: calc(100vh - 36px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: #fff8f1;
+    }
+
+    .cover-image {
+      width: 100%;
+      display: block;
+    }
+
+    .cover-content {
+      padding: 18px 24px 28px;
+      text-align: center;
+    }
+
+    .cover-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      margin: 4px 0 8px;
+      color: #805845;
+    }
+
+    .cover-subtitle {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #7b6254;
+      margin: 0 auto 20px;
+    }
+
+    .start-btn,
+    .next-btn,
+    .back-btn,
+    .restart-btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      padding: 14px 24px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    }
+
+    .start-btn,
+    .next-btn,
+    .restart-btn {
+      color: white;
+      background: linear-gradient(135deg, #d88991, #c47a58);
+      box-shadow: 0 8px 18px rgba(170, 92, 80, 0.32);
+    }
+
+    .back-btn {
+      color: #8a6858;
+      background: #f7e9dc;
+      box-shadow: 0 5px 12px rgba(145, 103, 72, 0.16);
+    }
+
+    .start-btn:hover,
+    .next-btn:hover,
+    .back-btn:hover,
+    .restart-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .next-btn:disabled,
+    .back-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .quiz-page {
+      min-height: calc(100vh - 36px);
+      background-image:
+        linear-gradient(rgba(255, 250, 245, 0.66), rgba(255, 250, 245, 0.78)),
+        url("https://imgpoi.com/i/0FWYPE.png");
+      background-size: cover;
+      background-position: center;
+      padding: 22px 18px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .progress-wrap {
+      margin-bottom: 16px;
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 9px;
+      color: #7b6254;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+      border: 1px solid rgba(191, 151, 125, 0.28);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 7%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #e8b6c3, #d69d75);
+      transition: width 0.25s ease;
+    }
+
+    .question-card {
+      background: rgba(255, 252, 248, 0.92);
+      border: 1px solid rgba(200, 164, 132, 0.36);
+      border-radius: 28px;
+      padding: 22px 18px;
+      box-shadow: 0 10px 24px rgba(128, 86, 55, 0.16);
+      backdrop-filter: blur(2px);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .question-label {
+      color: #bb7a76;
+      font-weight: 900;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .question-title {
+      font-size: 1.5rem;
+      line-height: 1.45;
+      font-weight: 900;
+      margin: 0 0 8px;
+      color: #4b342a;
+    }
+
+    .multi-note {
+      margin: 0 0 16px;
+      color: #8b7060;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      border: 2px solid rgba(201, 158, 137, 0.28);
+      background: rgba(255, 255, 255, 0.86);
+      border-radius: 20px;
+      padding: 15px 15px;
+      color: #4b342a;
+      font-size: 1.06rem;
+      line-height: 1.55;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: rgba(204, 126, 118, 0.55);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .option.selected {
+      border-color: #d4868b;
+      background: #fff1f2;
+      box-shadow: 0 0 0 4px rgba(212, 134, 139, 0.16);
+    }
+
+    .option.no-score {
+      background: rgba(255, 252, 247, 0.72);
+      color: #8a7062;
+    }
+
+    .option-prefix {
+      display: inline-flex;
+      width: 1.8em;
+      height: 1.8em;
+      align-items: center;
+      justify-content: center;
+      margin-right: 6px;
+      border-radius: 50%;
+      background: #f4dfd7;
+      color: #8b5f51;
+      font-weight: 900;
+    }
+
+    .option.selected .option-prefix {
+      background: #d4868b;
+      color: #fff;
+    }
+
+    .quiz-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .quiz-actions button {
+      flex: 1;
+    }
+
+    .hint {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #8b7060;
+      text-align: center;
+    }
+
+    .result-page {
+      min-height: calc(100vh - 36px);
+      padding: 20px 16px 28px;
+      background:
+        linear-gradient(rgba(255, 250, 245, 0.88), rgba(255, 246, 239, 0.96)),
+        url("https://imgpoi.com/i/0FWYPE.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: 24px;
+      padding: 18px 14px;
+      border: 1px solid rgba(190, 145, 114, 0.28);
+      box-shadow: 0 10px 22px rgba(128, 86, 55, 0.12);
+    }
+
+    .result-header h1 {
+      margin: 0 0 8px;
+      font-size: 1.6rem;
+      color: #815542;
+    }
+
+    .result-header p {
+      margin: 0;
+      color: #7b6254;
+      line-height: 1.75;
+      font-size: 0.98rem;
+    }
+
+    .result-summary {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stone-summary {
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      padding: 14px 16px;
+      border: 1px solid rgba(190, 145, 114, 0.28);
+      box-shadow: 0 8px 18px rgba(128, 86, 55, 0.12);
+    }
+
+    .stone-rank {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #c17370;
+      margin-bottom: 4px;
+    }
+
+    .stone-name {
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      color: #4b342a;
+    }
+
+    .stone-desc {
+      margin: 0;
+      font-size: 0.98rem;
+      line-height: 1.75;
+      color: #765f52;
+    }
+
+    .result-image-block {
+      background: rgba(255, 255, 255, 0.74);
+      border-radius: 24px;
+      padding: 12px;
+      border: 1px solid rgba(190, 145, 114, 0.26);
+      box-shadow: 0 10px 24px rgba(128, 86, 55, 0.15);
+      margin-bottom: 16px;
+    }
+
+    .result-image-title {
+      text-align: center;
+      font-weight: 900;
+      color: #815542;
+      margin: 4px 0 10px;
+      font-size: 1.12rem;
+      line-height: 1.5;
+    }
+
+    .result-image {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .score-details {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(190, 145, 114, 0.25);
+      color: #6a5549;
+    }
+
+    .score-details summary {
+      cursor: pointer;
+      font-weight: 900;
+      color: #8a5d4b;
+      font-size: 1rem;
+    }
+
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.92rem;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    .score-table th,
+    .score-table td {
+      border-bottom: 1px solid rgba(150, 115, 92, 0.18);
+      padding: 8px 6px;
+      text-align: center;
+    }
+
+    .score-table th {
+      background: #f5e7da;
+      color: #745549;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .result-actions button {
+      flex: 1;
+    }
+
+    .no-result-box {
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(190, 145, 114, 0.28);
+      padding: 20px 18px;
+      text-align: center;
+      line-height: 1.85;
+      color: #765f52;
+      box-shadow: 0 8px 18px rgba(128, 86, 55, 0.12);
+      margin-bottom: 18px;
+    }
+
+    .no-result-box h2 {
+      margin: 0 0 8px;
+      color: #815542;
+      font-size: 1.35rem;
+    }
+
+    @media (max-width: 420px) {
+      .app {
+        padding: 0;
+      }
+
+      .phone-frame {
+        border-radius: 0;
+        min-height: 100vh;
+      }
+
+      .cover-page,
+      .quiz-page,
+      .result-page {
+        min-height: 100vh;
+      }
+
+      .question-title {
+        font-size: 1.32rem;
+      }
+
+      .option {
+        font-size: 1rem;
+        padding: 13px;
+      }
+
+      .result-header h1 {
+        font-size: 1.42rem;
+      }
+
+      .stone-name {
+        font-size: 1.22rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <section class="phone-frame">
+
+      <section id="coverPage" class="cover-page">
+        <img
+          class="cover-image"
+          src="https://imgpoi.com/i/0FW4N5.png"
+          alt="召喚你的療癒小石封面"
+        />
+
+        <div class="cover-content">
+          <h1 class="cover-title">準備好召喚你的療癒小石了嗎？</h1>
+          <p class="cover-subtitle">
+            14題療癒心理測驗，陪你看看最近的身心狀態，<br />
+            找到此刻最適合陪伴你的主水晶與次水晶。
+          </p>
+
+          <button class="start-btn" type="button" onclick="startQuiz()">
+            開始測驗 ✨
+          </button>
+        </div>
+      </section>
+
+      <section id="quizPage" class="quiz-page hidden">
+        <div class="progress-wrap">
+          <div class="progress-top">
+            <span id="questionCount">第 1 / 14 題</span>
+            <span>召喚中… 🔮</span>
+          </div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <article class="question-card">
+          <div id="questionLabel" class="question-label">第1題</div>
+          <h2 id="questionTitle" class="question-title"></h2>
+          <p class="multi-note">
+            可複選。若選 E，代表本題 A～D 都不符合，系統會自動取消其他選項。
+          </p>
+
+          <div id="options" class="options"></div>
+
+          <div class="quiz-actions">
+            <button id="backBtn" class="back-btn" type="button" onclick="prevQuestion()">
+              上一題
+            </button>
+            <button id="nextBtn" class="next-btn" type="button" onclick="nextQuestion()" disabled>
+              下一題
+            </button>
+          </div>
+
+          <p class="hint">
+            請選擇最近最像你的狀態；若都不像，也可以選 E，不需要硬選 💛
+          </p>
+        </article>
+      </section>
+
+      <section id="resultPage" class="result-page hidden">
+        <div class="result-header">
+          <h1>你的療癒小石出現了 ✨</h1>
+          <p>
+            依照你的作答結果，<br />
+            以下是最適合陪伴你的<strong>主水晶</strong>與<strong>次水晶</strong>。
+          </p>
+        </div>
+
+        <div id="noResultBox" class="no-result-box hidden">
+          <h2>目前還沒有明顯的小石訊號 🌙</h2>
+          <p>
+            你可能正處在一個很難被簡單分類的狀態。<br />
+            這也沒關係，代表你不需要勉強自己套進任何答案裡。<br />
+            可以休息一下，之後再回來重新測一次。
+          </p>
+        </div>
+
+        <div id="resultSummary" class="result-summary"></div>
+
+        <div id="primaryImageBlock" class="result-image-block">
+          <div id="primaryImageTitle" class="result-image-title"></div>
+          <img id="primaryResultImage" class="result-image" src="" alt="主水晶結果圖解" />
+        </div>
+
+        <div id="secondaryImageBlock" class="result-image-block">
+          <div id="secondaryImageTitle" class="result-image-title"></div>
+          <img id="secondaryResultImage" class="result-image" src="" alt="次水晶結果圖解" />
+        </div>
+
+        <details class="score-details">
+          <summary>查看計分明細</summary>
+          <table class="score-table">
+            <thead>
+              <tr>
+                <th>療癒小石</th>
+                <th>分數</th>
+              </tr>
+            </thead>
+            <tbody id="scoreTableBody"></tbody>
+          </table>
+        </details>
+
+        <div class="result-actions">
+          <button class="back-btn" type="button" onclick="backToLastQuestion()">
+            回到題目
+          </button>
+          <button class="restart-btn" type="button" onclick="restartQuiz()">
+            重新測驗
+          </button>
+        </div>
+      </section>
+
+    </section>
+  </main>
+
+  <script>
+    const stoneData = {
+      W: {
+        name: "白水晶",
+        role: "整理小精靈",
+        image: "https://imgpoi.com/i/0FBK6V.png",
+        desc: "代表清晰、整理、聚焦與方向感。適合思緒混亂、事情太多、需要重新排出優先順序的你。"
+      },
+      R: {
+        name: "紅碧玉",
+        role: "穩穩小戰士",
+        image: "https://imgpoi.com/i/0FBNEE.png",
+        desc: "代表穩定、紮根、行動力與恢復能量。適合過勞、硬撐、需要慢慢補回力量的你。"
+      },
+      P: {
+        name: "粉晶",
+        role: "愛心小精靈",
+        image: "https://imgpoi.com/i/0FWTPD.png",
+        desc: "代表自愛、情感療癒、溫柔接納與被愛感。適合容易自我懷疑、在關係中受傷的你。"
+      },
+      T: {
+        name: "虎眼石",
+        role: "勇氣小隊長",
+        image: "https://imgpoi.com/i/0FWRW9.png",
+        desc: "代表勇氣、判斷力、信心與果斷行動。適合卡住、猶豫、需要相信自己選擇的你。"
+      },
+      G: {
+        name: "東菱玉",
+        role: "慢慢小療癒師",
+        image: "https://imgpoi.com/i/0FW05M.png",
+        desc: "代表修復、舒壓、休息與情緒平衡。適合疲累耗損、需要允許自己慢下來的你。"
+      },
+      A: {
+        name: "紫水晶",
+        role: "安靜小智者",
+        image: "https://imgpoi.com/i/0FW1C2.png",
+        desc: "代表安定、放鬆、沉澱與內在寧靜。適合想太多、焦慮、精神疲勞、需要讓心慢下來的你。"
+      },
+      L: {
+        name: "青金石",
+        role: "真實小使者",
+        image: "https://imgpoi.com/i/0FWAEG.png",
+        desc: "代表表達、真實、釐清想法與溝通。適合壓抑、話說不出口、需要被聽見的你。"
+      },
+      O: {
+        name: "黑曜石",
+        role: "守護小戰士",
+        image: "https://imgpoi.com/i/0FWW6B.png",
+        desc: "代表保護、界線、釋放與穩定能量。適合過度承擔、壓力累積、需要放下不屬於自己責任的你。"
+      }
+    };
+
+    const eOption = {
+      label: "E",
+      text: "以上都沒有符合的ㄟ 🌙",
+      stone: null
+    };
+
+    const questions = [
+      {
+        title: "最近的你，比較像…",
+        options: [
+          { label: "A", text: "腦袋一直轉停不下來 🌀", stone: "W" },
+          { label: "B", text: "很累但還是撐著 💦", stone: "R" },
+          { label: "C", text: "情緒很容易被觸動 🌧", stone: "P" },
+          { label: "D", text: "有點迷失方向 🌫", stone: "T" },
+          eOption
+        ]
+      },
+      {
+        title: "當事情很多時…",
+        options: [
+          { label: "A", text: "想很多但不知道怎麼開始 🤯", stone: "A" },
+          { label: "B", text: "一直做不停，停不下來 🔥", stone: "R" },
+          { label: "C", text: "有點想躲起來不面對 😵", stone: "G" },
+          { label: "D", text: "很想說，但說不出口 🗣", stone: "L" },
+          eOption
+        ]
+      },
+      {
+        title: "在人際中…",
+        options: [
+          { label: "A", text: "很在意別人怎麼看你 🤔", stone: "L" },
+          { label: "B", text: "常常付出比較多 💗", stone: "P" },
+          { label: "C", text: "容易覺得煩或不耐 😤", stone: "O" },
+          { label: "D", text: "習慣自己消化情緒 🧊", stone: "G" },
+          eOption
+        ]
+      },
+      {
+        title: "最近最困擾你…",
+        options: [
+          { label: "A", text: "思緒混亂 🧩", stone: "W" },
+          { label: "B", text: "身體很累 😞", stone: "R" },
+          { label: "C", text: "情緒卡住 😣", stone: "P" },
+          { label: "D", text: "做決定很困難 🤨", stone: "T" },
+          eOption
+        ]
+      },
+      {
+        title: "當別人讓你失望…",
+        options: [
+          { label: "A", text: "會反覆想很久 🥺", stone: "A" },
+          { label: "B", text: "默默吞下去 😶", stone: "G" },
+          { label: "C", text: "直接爆發情緒 😡", stone: "O" },
+          { label: "D", text: "開始懷疑自己 😞", stone: "P" },
+          eOption
+        ]
+      },
+      {
+        title: "你的工作狀態…",
+        options: [
+          { label: "A", text: "想很多但執行卡卡 💭", stone: "W" },
+          { label: "B", text: "一直做，但很疲憊 🔥", stone: "R" },
+          { label: "C", text: "情緒很影響表現 🌊", stone: "P" },
+          { label: "D", text: "很需要做判斷 ⚖️", stone: "T" },
+          eOption
+        ]
+      },
+      {
+        title: "你對自己的感覺…",
+        options: [
+          { label: "A", text: "腦袋很滿很雜 😵", stone: "A" },
+          { label: "B", text: "很努力但很累 😓", stone: "R" },
+          { label: "C", text: "有時很想把責任推開 🧱", stone: "O" },
+          { label: "D", text: "不確定自己真正想要什麼 😶", stone: "L" },
+          eOption
+        ]
+      },
+      {
+        title: "壓力大時…",
+        options: [
+          { label: "A", text: "想很多停不下來 🌀", stone: "A" },
+          { label: "B", text: "繼續撐住 💦", stone: "R" },
+          { label: "C", text: "情緒爆掉 😵", stone: "O" },
+          { label: "D", text: "放空拖延 🫥", stone: "G" },
+          eOption
+        ]
+      },
+      {
+        title: "你最需要…",
+        options: [
+          { label: "A", text: "有條理的方向 ✨", stone: "W" },
+          { label: "B", text: "好好休息 🌿", stone: "G" },
+          { label: "C", text: "被理解 💛", stone: "P" },
+          { label: "D", text: "做出決定 ⚡", stone: "T" },
+          eOption
+        ]
+      },
+      {
+        title: "當你終於有一點空檔時…",
+        options: [
+          { label: "A", text: "想找人好好聊聊自己的真實感受 🗣", stone: "L" },
+          { label: "B", text: "只想把外界的壓力隔開一下 🛡", stone: "O" },
+          { label: "C", text: "腦袋還是停不下來，很難真正放鬆 🌙", stone: "A" },
+          { label: "D", text: "想把事情整理成清楚的清單 📖", stone: "W" },
+          eOption
+        ]
+      },
+      {
+        title: "面對新的挑戰時…",
+        options: [
+          { label: "A", text: "會想先休息一下，恢復狀態再說 🌿", stone: "G" },
+          { label: "B", text: "希望有人能聽懂你的想法 💬", stone: "L" },
+          { label: "C", text: "其實想勇敢一點往前走 🐯", stone: "T" },
+          { label: "D", text: "會先想保護自己，不想再被消耗 🖤", stone: "O" },
+          eOption
+        ]
+      },
+      {
+        title: "最近你最常有的感覺是…",
+        options: [
+          { label: "A", text: "很想把生活整理得更清楚 🧺", stone: "W" },
+          { label: "B", text: "希望自己能被溫柔對待 💗", stone: "P" },
+          { label: "C", text: "好想有穩穩的力量支撐自己 🌱", stone: "R" },
+          { label: "D", text: "想讓心安靜一點，不要那麼緊繃 🌌", stone: "A" },
+          eOption
+        ]
+      },
+      {
+        title: "當你感覺被消耗時…",
+        options: [
+          { label: "A", text: "會想做一點讓自己慢慢恢復的事 🍃", stone: "G" },
+          { label: "B", text: "會想把事情說清楚，不想再悶著 🔵", stone: "L" },
+          { label: "C", text: "會想做一個明確決定，不再卡住 ⚡", stone: "T" },
+          { label: "D", text: "會想把不屬於自己的責任放下 🛡", stone: "O" },
+          eOption
+        ]
+      },
+      {
+        title: "此刻的你，最想召喚哪一種陪伴？",
+        options: [
+          { label: "A", text: "幫我整理混亂，讓事情變清楚 ✨", stone: "W" },
+          { label: "B", text: "讓我安靜下來，找回內在平靜 💜", stone: "A" },
+          { label: "C", text: "給我勇氣，相信自己的選擇 🐯", stone: "T" },
+          { label: "D", text: "讓我能真實表達，不再壓抑 🔵", stone: "L" },
+          eOption
+        ]
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    /*
+      複選版：
+      answers 每一題是一個陣列，存放選到的 optionIndex
+      例如：第1題選 A、C => answers[0] = [0, 2]
+      若選 E => answers[0] = [4]
+    */
+    let answers = Array.from({ length: questions.length }, () => []);
+
+    const coverPage = document.getElementById("coverPage");
+    const quizPage = document.getElementById("quizPage");
+    const resultPage = document.getElementById("resultPage");
+
+    const questionCount = document.getElementById("questionCount");
+    const questionLabel = document.getElementById("questionLabel");
+    const questionTitle = document.getElementById("questionTitle");
+    const optionsContainer = document.getElementById("options");
+    const progressFill = document.getElementById("progressFill");
+    const backBtn = document.getElementById("backBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function startQuiz() {
+      coverPage.classList.add("hidden");
+      resultPage.classList.add("hidden");
+      quizPage.classList.remove("hidden");
+      currentQuestionIndex = 0;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderQuestion() {
+      const question = questions[currentQuestionIndex];
+      const currentAnswers = answers[currentQuestionIndex];
+
+      questionCount.textContent = `第 ${currentQuestionIndex + 1} / ${questions.length} 題`;
+      questionLabel.textContent = `第${currentQuestionIndex + 1}題`;
+      questionTitle.textContent = question.title;
+
+      const progressPercent = ((currentQuestionIndex + 1) / questions.length) * 100;
+      progressFill.style.width = `${progressPercent}%`;
+
+      optionsContainer.innerHTML = "";
+
+      question.options.forEach((option, optionIndex) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option";
+
+        if (option.stone === null) {
+          button.classList.add("no-score");
+        }
+
+        if (currentAnswers.includes(optionIndex)) {
+          button.classList.add("selected");
+        }
+
+        button.innerHTML = `
+          <span class="option-prefix">${option.label}</span>
+          ${option.text}
+        `;
+
+        button.addEventListener("click", () => toggleOption(optionIndex));
+
+        optionsContainer.appendChild(button);
+      });
+
+      backBtn.disabled = currentQuestionIndex === 0;
+      nextBtn.disabled = answers[currentQuestionIndex].length === 0;
+      nextBtn.textContent =
+        currentQuestionIndex === questions.length - 1 ? "查看結果" : "下一題";
+    }
+
+    function toggleOption(optionIndex) {
+      const question = questions[currentQuestionIndex];
+      const selectedOption = question.options[optionIndex];
+      const isE = selectedOption.stone === null;
+
+      let currentAnswers = answers[currentQuestionIndex];
+
+      if (isE) {
+        /*
+          選 E：
+          如果原本已經選 E，就取消 E
+          如果原本沒選 E，就清掉 A-D，只留下 E
+        */
+        if (currentAnswers.includes(optionIndex)) {
+          currentAnswers = [];
+        } else {
+          currentAnswers = [optionIndex];
+        }
+      } else {
+        /*
+          選 A-D：
+          先移除 E，再切換該選項
+        */
+        currentAnswers = currentAnswers.filter(index => {
+          return question.options[index].stone !== null;
+        });
+
+        if (currentAnswers.includes(optionIndex)) {
+          currentAnswers = currentAnswers.filter(index => index !== optionIndex);
+        } else {
+          currentAnswers.push(optionIndex);
+        }
+      }
+
+      answers[currentQuestionIndex] = currentAnswers;
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      if (answers[currentQuestionIndex].length === 0) return;
+
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        showResult();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function calculateScores() {
+      const scores = {
+        W: 0,
+        R: 0,
+        P: 0,
+        T: 0,
+        G: 0,
+        A: 0,
+        L: 0,
+        O: 0
+      };
+
+      const tieBreaker = {
+        W: -1,
+        R: -1,
+        P: -1,
+        T: -1,
+        G: -1,
+        A: -1,
+        L: -1,
+        O: -1
+      };
+
+      answers.forEach((answerIndexes, questionIndex) => {
+        answerIndexes.forEach(answerIndex => {
+          const selectedOption = questions[questionIndex].options[answerIndex];
+          const stone = selectedOption.stone;
+
+          if (stone === null) {
+            return;
+          }
+
+          scores[stone]++;
+          tieBreaker[stone] = questionIndex;
+        });
+      });
+
+      const sorted = Object.keys(scores)
+        .filter(code => scores[code] > 0)
+        .sort((a, b) => {
+          if (scores[b] !== scores[a]) {
+            return scores[b] - scores[a];
+          }
+          return tieBreaker[b] - tieBreaker[a];
+        });
+
+      return {
+        scores,
+        sorted,
+        primary: sorted[0] || null,
+        secondary: sorted[1] || null
+      };
+    }
+
+    function showResult() {
+      const result = calculateScores();
+
+      quizPage.classList.add("hidden");
+      coverPage.classList.add("hidden");
+      resultPage.classList.remove("hidden");
+
+      renderResult(result);
+      renderScoreTable(result.scores);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderResult(result) {
+      const noResultBox = document.getElementById("noResultBox");
+      const resultSummary = document.getElementById("resultSummary");
+      const primaryImageBlock = document.getElementById("primaryImageBlock");
+      const secondaryImageBlock = document.getElementById("secondaryImageBlock");
+
+      resultSummary.innerHTML = "";
+      primaryImageBlock.classList.add("hidden");
+      secondaryImageBlock.classList.add("hidden");
+      noResultBox.classList.add("hidden");
+
+      if (!result.primary) {
+        noResultBox.classList.remove("hidden");
+        return;
+      }
+
+      const primary = stoneData[result.primary];
+
+      resultSummary.innerHTML += `
+        <div class="stone-summary">
+          <div class="stone-rank">🌟 主水晶</div>
+          <div class="stone-name">${primary.name}｜${primary.role}</div>
+          <p class="stone-desc">${primary.desc}</p>
+        </div>
+      `;
+
+      document.getElementById("primaryImageTitle").textContent =
+        `🌟 主水晶：${primary.name}｜${primary.role}`;
+      document.getElementById("primaryResultImage").src = primary.image;
+      document.getElementById("primaryResultImage").alt = `${primary.name}結果圖解`;
+      primaryImageBlock.classList.remove("hidden");
+
+      if (!result.secondary) {
+        resultSummary.innerHTML += `
+          <div class="stone-summary">
+            <div class="stone-rank">⭐ 次水晶</div>
+            <div class="stone-name">暫不明顯</div>
+            <p class="stone-desc">
+              你的作答目前只明顯指向一種主要陪伴能量。可以先從主水晶開始，也可以之後再重新測一次。
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      const secondary = stoneData[result.secondary];
+
+      resultSummary.innerHTML += `
+        <div class="stone-summary">
+          <div class="stone-rank">⭐ 次水晶</div>
+          <div class="stone-name">${secondary.name}｜${secondary.role}</div>
+          <p class="stone-desc">${secondary.desc}</p>
+        </div>
+      `;
+
+      document.getElementById("secondaryImageTitle").textContent =
+        `⭐ 次水晶：${secondary.name}｜${secondary.role}`;
+      document.getElementById("secondaryResultImage").src = secondary.image;
+      document.getElementById("secondaryResultImage").alt = `${secondary.name}結果圖解`;
+      secondaryImageBlock.classList.remove("hidden");
+    }
+
+    function renderScoreTable(scores) {
+      const scoreTableBody = document.getElementById("scoreTableBody");
+
+      const rows = Object.keys(stoneData)
+        .map(code => ({
+          code,
+          name: stoneData[code].name,
+          role: stoneData[code].role,
+          score: scores[code]
+        }))
+        .sort((a, b) => b.score - a.score);
+
+      scoreTableBody.innerHTML = rows.map(row => `
+        <tr>
+          <td>${row.name}<br><small>${row.role}</small></td>
+          <td>${row.score}</td>
+        </tr>
+      `).join("");
+    }
+
+    function backToLastQuestion() {
+      resultPage.classList.add("hidden");
+      quizPage.classList.remove("hidden");
+      currentQuestionIndex = questions.length - 1;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function restartQuiz() {
+      answers = Array.from({ length: questions.length }, () => []);
+      currentQuestionIndex = 0;
+      resultPage.classList.add("hidden");
+      coverPage.classList.remove("hidden");
+      quizPage.classList.add("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
